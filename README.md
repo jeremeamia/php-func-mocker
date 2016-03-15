@@ -95,9 +95,9 @@ class SignerTest extends \PHPUnit_Framework_TestCase
     {
         // Mock the request with PHPUnit
         $request = $this->getMock(Request::class);
-        $request->method('getMethod')->returnValue('POST');
-        $request->method('getHeader')->returnValue(['CREATE_THING']);
-        $request->method('getBody')->returnValue('PARAMS');
+        $request->method('getMethod')->willReturn('POST');
+        $request->method('getHeader')->willReturn(['CREATE_THING']);
+        $request->method('getBody')->willReturn('PARAMS');
         
         // Mock the call to PHP's time() function to give us a deterministic value.
         FuncMocker::mock('time', 'My\Crypto', function () {
@@ -140,6 +140,11 @@ echo My\App\time();
 // > 1234567890
 ```
 
+## Limitations
+
+1. The function to be mocked must be used in a namespace other than the global namespace.
+1. The function to be mocked must not be referenced using a fully-qualified name (e.g., `\time()`).
+
 ## Testing
 
 ``` bash
@@ -148,7 +153,15 @@ $ composer test
 
 ## Credits
 
-- [Jeremy Lindblom][link-author]
+- [Jeremy Lindblom][link-author] - Main author.
+- [Marius Sarca][link-marius] - Borrowed his stream wrapper include technique from [opis/closure][link-opis].
+
+## Alternatives
+
+- Do it yourself. See the following articles:
+    - [Fabian Schmengler's Blog - "Mocking" built-in functions like time() in Unit Tests][link-blog-fabian]
+    - [Matthew Weier O'Phinney's Blog - Testing Code That Emits Output][link-blog-mwop]
+- [php-mock/php-mock][link-alt-phpmock] - Similar library I found afterwards.
 
 ## License
 
@@ -166,3 +179,8 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-downloads]: https://packagist.org/packages/jeremeamia/func-mocker
 [link-author]: https://github.com/jeremeamia
 [link-contributors]: ../../contributors
+[link-blog-fabian]: http://www.schmengler-se.de/en/2011/03/php-mocking-built-in-functions-like-time-in-unit-tests/
+[link-blog-mwop]: https://mwop.net/blog/2014-08-11-testing-output-generating-code.html
+[link-alt-phpmock]: https://github.com/php-mock/php-mock
+[link-marius]: https://github.com/msarca
+[link-opis]: https://github.com/opis/closure
