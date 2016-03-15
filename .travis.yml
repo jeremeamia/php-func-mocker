@@ -19,7 +19,7 @@ before_script:
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script:
-  - vendor/bin/phpcs --standard=psr2 src/
+  - vendor/bin/phpcs --standard=psr2 --ignore=src/Stream.php src/
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
 after_script:

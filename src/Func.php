@@ -23,7 +23,9 @@ class Func
     public function __construct(callable $original, callable $mocked = null)
     {
         $this->originalFn = $original;
-        $this->mockedFn = $mocked ?: function () {/* NO-OP */};
+        $this->mockedFn = $mocked ?: function () {
+            /* NO-OP */
+        };
     }
 
     /**

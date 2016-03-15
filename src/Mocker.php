@@ -48,7 +48,7 @@ class Mocker
         }
 
         // Store a representation of the function in the registry by it's fully-qualified name.
-        self::$functionRegistry[$fqfn] = new Func($name, $behavior);;
+        self::$functionRegistry[$fqfn] = new Func($name, $behavior);
 
         // Dynamically creates and includes a function using code template.
         // Note: This is using stream wrappers in a clever way to avoid eval()'ing
