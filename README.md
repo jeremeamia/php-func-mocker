@@ -19,31 +19,69 @@ $ composer require jeremeamia/func-mocker
 
 ## Usage
 
+Assume there is a class that uses a global function (e.g., `time()`) that you'd like to mock.
+
 ``` php
 <?php
 
-namespace Foo
+namespace My\Crypto;
+
+use Psr\Http\Message\RequestInterface as Request;
+
+class Signer
 {
-    class Bar
+    // ...
+
+    public function getStringToSign(Request $request)
     {
-        public static function baz()
-        {
-            return time();
-        }
+        return $request->getMethod() . "\n"
+            . time() . "\n"
+            . $request->getHeader('X-API-Operation')[0] . "\n"
+            . $request->getBody();            
     }
+    
+    // ...
 }
+```
 
-namespace
+Here is an example of a test that uses FuncMocker to mock `time()` to return a fixed value.
+
+```php
+<?php
+
+namespace My\App\Tests;
+
+use FuncMocker\Mocker as FuncMocker;
+use My\Crypto\Signer;
+use Psr\Http\Message\RequestInterface as Request;
+
+class SignerTest extends \PHPUnit_Framework_TestCase
 {
-    require 'Mocker.php';
-    require 'Stream.php';
+    // ...
 
-    FuncMocker\Mocker::mock('time', 'Foo', function () {
-        return 123456789;
-    });
-
-    assert(function_exists('Foo\time'));
-    assert(123456789 === Foo\Bar::baz());
+    public function testCanGetStringToSign()
+    {
+        // Mock the request with PHPUnit
+        $request = $this->getMock(Request::class);
+        $request->method('getMethod')->returnValue('POST');
+        $request->method('getHeader')->returnValue(['CREATE_THING']);
+        $request->method('getBody')->returnValue('PARAMS');
+        
+        // Mock the call to PHP's time() function to give us a deterministic value.
+        FuncMocker::mock('time', 'My\Crypto', function () {
+            return 12345;
+        });
+                
+        $signer = new Signer();
+        
+        // Check to see that the string to sign is constructed how we would expect.
+        $this->assertEquals(
+            "POST\n12345\nCREATE_THING\nPARAMS",
+            $signer->getStringToSign()
+        );
+    }
+    
+    // ...
 }
 
 ```
