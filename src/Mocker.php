@@ -9,7 +9,7 @@ namespace FuncMocker;
  */
 class Mocker
 {
-    const TEMPLATE = 'namespace %s{function %s(){return\FuncMocker\Mocker::call(__FUNCTION__,func_get_args());}}';
+    const TEMPLATE = 'namespace %s{function %s(){$f=\FuncMocker\Mocker::get(__FUNCTION__);return$f(func_get_args());}}';
 
     /** @var array A registry of functions that are referenced by their fully-qualified name. */
     private static $functionRegistry = [];
@@ -27,6 +27,7 @@ class Mocker
      * @param string $name The name of the function being mocked.
      * @param string $namespace The namespace the function should be mocked in.
      * @param \Closure|null $behavior The behavior of the mocked function. Leave null for no-op.
+     * @return Func
      */
     public static function mock($name, $namespace, \Closure $behavior = null)
     {
@@ -35,52 +36,40 @@ class Mocker
             self::$streamWrapperReady = (bool) stream_wrapper_register(Stream::PROTOCOL, Stream::class);
         }
 
-        // If no behavior is provided, it is set as a no-op.
-        $behavior = $behavior ?: self::noop();
-
-        // Prepares the fully-qualified function name (FQFN).
+        // Determine the fully-qualified function name.
         $namespace = trim($namespace, '\\');
         $fqfn = $namespace . '\\' . $name;
 
-        // Ensures that the function does not already exist.
+        // Ensure that the function has not already been created.
         if (function_exists($fqfn)) {
-            throw new \RuntimeException("Function {$fqfn} already exists.");
+            throw new \RuntimeException(
+                'The function cannot be mocked into the given namespace, because it already exists.'
+            );
         }
 
-        // Stores the function in the function registry by it's fully-qualified name.
-        self::$functionRegistry[$fqfn] = $behavior;
+        // Store a representation of the function in the registry by it's fully-qualified name.
+        self::$functionRegistry[$fqfn] = new Func($name, $behavior);;
 
         // Dynamically creates and includes a function using code template.
         // Note: This is using stream wrappers in a clever way to avoid eval()'ing
         //       in an inappropriate context or having to write to a temp file.
         include Stream::PROTOCOL . '://' . sprintf(self::TEMPLATE, $namespace, $name);
+
+        return self::$functionRegistry[$fqfn];
     }
 
     /**
-     * Execute a registered function by it's fully-qualified name.
+     * Fetches a previously registered function by it's fully-qualified name.
      *
-     * @param string $fqfn Fully-qualified function name to execute.
-     * @param array $args Arguments to execute the function with.
-     * @return mixed The function's return value
-     * @internal Not to be used outside of the library.
+     * @param string $fqfn Fully-qualified function name to fetch.
+     * @return Func
      */
-    public static function call($fqfn, array $args)
+    public static function get($fqfn)
     {
-        $fn = self::$functionRegistry[$fqfn];
-        return $fn(...$args);
-    }
+        if (!isset(self::$functionRegistry[$fqfn])) {
+            throw new \RuntimeException("The {$fqfn} function has not been registered with FuncMocker.");
+        }
 
-    /**
-     * Used to retrieve a default value for the mocked functions behavior.
-     *
-     * It returns a no-op (no operation) function.
-     *
-     * @return \Closure
-     */
-    private static function noop()
-    {
-        return function () {
-            // NO-OP
-        };
+        return self::$functionRegistry[$fqfn];
     }
 }

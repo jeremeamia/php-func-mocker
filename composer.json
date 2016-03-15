@@ -28,12 +28,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Jeremeamia\\FuncMocker\\": "src"
+            "FuncMocker\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Jeremeamia\\FuncMocker\\": "tests"
+            "FuncMocker\\Test\\": "tests"
         }
     },
     "scripts": {

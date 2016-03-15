@@ -19,7 +19,7 @@ class Stream
 
     public function stream_open($path, $mode, $options, &$opened_path)
     {
-        $this->content = "<?php\n" . substr($path, strlen(static::PROTO . '://'));
+        $this->content = "<?php " . substr($path, strlen(self::PROTOCOL . '://'));
         $this->length = strlen($this->content);
         return true;
     }
@@ -43,8 +43,8 @@ class Stream
         return $stat;
     }
 
-    public function stream_tell()
+    public function url_stat($path, $flags)
     {
-        return $this->pointer;
+        return $this->stream_stat();
     }
 }
