@@ -5,8 +5,6 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
 Allows you to override (i.e., mock) global functions used within a given namespace for the purposes of testing.
@@ -106,8 +104,6 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-version]: https://img.shields.io/packagist/v/jeremeamia/func-mocker.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/jeremeamia/php-func-mocker/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/jeremeamia/php-func-mocker.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/jeremeamia/php-func-mocker.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/jeremeamia/func-mocker.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/jeremeamia/func-mocker
