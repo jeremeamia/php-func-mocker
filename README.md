@@ -1,5 +1,7 @@
 # PHP FuncMocker
 
+**FuncMocker** – Mocking PHP functions like a... punk rocker?
+
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
@@ -7,7 +9,7 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-FuncMocker – Mocking PHP functions like a... punk rocker?
+Allows you to override (i.e., mock) global functions used within a given namespace for the purposes of testing.
 
 ## Install
 
@@ -44,7 +46,7 @@ class Signer
 }
 ```
 
-Here is an example of a test that uses FuncMocker to mock `time()` to return a fixed value.
+Here is an example of a test that uses **FuncMocker** to mock `time()` to return a fixed value.
 
 ```php
 <?php
