@@ -18,6 +18,9 @@ There are _two_ main use cases I developed this for:
    called `db_add()` that you end up using in an object in your model layer, you might want to "mock" that function when
    you are testing so you don't actually make calls to the database in your unit tests.
 
+The simple technique behind this code is described in this [blog post by Fabian Schmengler][link-blog-fabian].
+Basically, it involves taking advantage of PHP's [namespace resolution rules][link-php-ns].
+
 ## Install
 
 Via Composer
@@ -162,6 +165,7 @@ $ composer test
     - [Fabian Schmengler's Blog - "Mocking" built-in functions like time() in Unit Tests][link-blog-fabian]
     - [Matthew Weier O'Phinney's Blog - Testing Code That Emits Output][link-blog-mwop]
 - [php-mock/php-mock][link-alt-phpmock] - Similar library I found afterwards.
+- [Patchwork][link-alt-patchwork] - More robust mocking library that intercepts calls.
 
 ## License
 
@@ -184,3 +188,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-alt-phpmock]: https://github.com/php-mock/php-mock
 [link-marius]: https://github.com/msarca
 [link-opis]: https://github.com/opis/closure
+[link-alt-patchwork]: http://antecedent.github.io/patchwork/
+[link-php-ns]: http://php.net/manual/en/language.namespaces.rules.php
