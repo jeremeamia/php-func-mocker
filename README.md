@@ -7,7 +7,16 @@
 [![Build Status][ico-travis]][link-travis]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-Allows you to override (i.e., mock) global functions used within a given namespace for the purposes of testing.
+Allows you to overwrite (i.e., mock) global functions used within a given namespace for the purposes of testing.
+
+There are _two_ main use cases I developed this for:
+
+1. When you are testing objects that call non-deterministic functions like `time()` and `rand()`, and you need these
+   functions to return deterministic values for the sake of the test.
+2. When you are working with code where you have objects that must make calls to functions. This is pretty common in
+   legacy codebases that were not previously object-oriented in nature. For example, if you're project has a function
+   called `db_add()` that you end up using in an object in your model layer, you might want to "mock" that function when
+   you are testing so you don't actually make calls to the database in your unit tests.
 
 ## Install
 
@@ -19,7 +28,29 @@ $ composer require jeremeamia/func-mocker
 
 ## Usage
 
-Assume there is a class that uses a global function (e.g., `time()`) that you'd like to mock.
+Let's you have a `RandomNumberGenerator` class in the namespace, `My\App`, that calls the global function `rand()`.
+You could overwrite the usage of `rand()` for that particular namespace by using **FuncMocker**.
+
+```php
+use My\App\RandomNumberGenerator;
+use FuncMocker\Mocker;
+
+Mocker::mock('rand', 'My\App', function () {
+    return 5;
+});
+
+$rng = new RandomNumberGenerator(1, 10);
+echo $rng->getNumber();
+//> 5
+echo $rng->getNumber();
+//> 5
+echo $rng->getNumber();
+//> 5
+```
+
+### Longer Example
+
+Assume there is a class that uses the global function (e.g., `time()`) that you'd like to mock.
 
 ``` php
 <?php
@@ -44,7 +75,8 @@ class Signer
 }
 ```
 
-Here is an example of a test that uses **FuncMocker** to mock `time()` to return a fixed value.
+Here is an example of a PHPUnit test that uses **FuncMocker** to mock `time()` to return a fixed value, making it much
+easier to write a test.
 
 ```php
 <?php
@@ -86,6 +118,28 @@ class SignerTest extends \PHPUnit_Framework_TestCase
 
 ```
 
+### Disabling and Re-Enabling
+
+FuncMocker also lets you disable mocks you've setup, in case you need the function to behave normally in your some of
+your tests.
+
+```php
+$func = FuncMocker::mock('time()', 'My\App', function () {
+    return 1234567890;
+});
+
+echo My\App\time();
+//> 1234567890
+
+$func->disable();
+echo My\App\time();
+//> 1458018866
+
+$func->enable();
+echo My\App\time();
+// > 1234567890
+```
+
 ## Testing
 
 ``` bash
@@ -95,7 +149,6 @@ $ composer test
 ## Credits
 
 - [Jeremy Lindblom][link-author]
-- [All Contributors][link-contributors]
 
 ## License
 

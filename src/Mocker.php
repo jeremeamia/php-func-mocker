@@ -3,7 +3,7 @@
 namespace FuncMocker;
 
 /**
- * Provides the ability to override (or mock) a global function within a given namespace to exhibit a given behavior.
+ * Provides the ability to overwrite (or mock) a global function within a given namespace to exhibit a given behavior.
  *
  * The class is meant to be a companion library to PHPUnit.
  */

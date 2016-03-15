@@ -1,7 +1,7 @@
 {
     "name": "jeremeamia/func-mocker",
     "type": "library",
-    "description": "Allows you to override global function used within a namespace for the purposes of testing.",
+    "description": "Allows you to overwrite global function used within a namespace for the purposes of testing.",
     "keywords": [
         "jeremeamia",
         "function",
