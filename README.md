@@ -124,7 +124,7 @@ FuncMocker also lets you disable mocks you've setup, in case you need the functi
 your tests.
 
 ```php
-$func = FuncMocker::mock('time()', 'My\App', function () {
+$func = FuncMocker\Mocker::mock('time()', 'My\App', function () {
     return 1234567890;
 });
 
