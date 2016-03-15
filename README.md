@@ -164,8 +164,9 @@ $ composer test
 - Do it yourself. See the following articles:
     - [Fabian Schmengler's Blog - "Mocking" built-in functions like time() in Unit Tests][link-blog-fabian]
     - [Matthew Weier O'Phinney's Blog - Testing Code That Emits Output][link-blog-mwop]
-- [php-mock/php-mock][link-alt-phpmock] - Similar library I found afterwards.
-- [Patchwork][link-alt-patchwork] - More robust mocking library that intercepts calls.
+- [php-mock/php-mock][link-alt-phpmock] - Similar function mocking library I found afterwards.
+- [Patchwork][link-alt-patchwork] - More robust mocking library that can intercept calls to functions.
+- [Atoum][link-alt-atoum] - Fullf-featured test framework with function mocking included.
 
 ## License
 
@@ -190,3 +191,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-opis]: https://github.com/opis/closure
 [link-alt-patchwork]: http://antecedent.github.io/patchwork/
 [link-php-ns]: http://php.net/manual/en/language.namespaces.rules.php
+[link-alt-atoum]: http://atoum.org/
